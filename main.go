@@ -26,7 +26,7 @@ func main() {
 	clock := widget.NewLabel("Time: 00:00:00")
 	clock.Alignment = fyne.TextAlignCenter
 
-	payClock := widget.NewLabel("Pay: ")
+	payClock := widget.NewLabel("Pay: 0.00")
 	payClock.Alignment = fyne.TextAlignCenter
 
 	start = widget.NewButton("Start", func() {
@@ -43,7 +43,12 @@ func main() {
 			for range time.Tick(time.Second) {
 				if running {
 					seconds++
+
+					// update seconds display
 					clock.SetText(formatDuration(seconds))
+
+					// update pay display
+					payClock.SetText(calcPay(seconds))
 				} else {
 					return
 				}
@@ -83,6 +88,12 @@ func main() {
 	mainWindow.SetFixedSize(true)
 	mainWindow.Show()
 	app.Run()
+}
+
+func calcPay(seconds int) string {
+	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
+	pay := duration.Hours() * 14.95
+	return fmt.Sprintf("Pay: %.2f", pay)
 }
 
 func formatDuration(seconds int) string {
