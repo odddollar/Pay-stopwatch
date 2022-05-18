@@ -53,6 +53,7 @@ func main() {
 		running = false
 		seconds = 0
 
+		start.SetText("Start")
 		clock.SetText(formatDuration(seconds))
 	})
 
