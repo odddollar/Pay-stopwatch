@@ -5,8 +5,10 @@ import (
 	"strconv"
 	"time"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -22,6 +24,8 @@ func main() {
 	running := false
 
 	clock := widget.NewLabel("Time: 00:00:00")
+	clock.Alignment = fyne.TextAlignCenter
+
 	start = widget.NewButton("Start", func() {
 		// change button text based on running state
 		running = !running
@@ -43,6 +47,7 @@ func main() {
 			}
 		}()
 	})
+
 	reset = widget.NewButton("Reset", func() {
 		// stop timer and reset duration
 		running = false
@@ -52,9 +57,13 @@ func main() {
 	})
 
 	// layout
-	buttons := container.NewHBox(
+	buttons := container.New(
+		layout.NewHBoxLayout(),
+		layout.NewSpacer(),
 		start,
+		layout.NewSpacer(),
 		reset,
+		layout.NewSpacer(),
 	)
 
 	content := container.NewVBox(
@@ -65,6 +74,8 @@ func main() {
 	mainWindow.SetContent(content)
 
 	// run the window
+	mainWindow.Resize(fyne.NewSize(250, 90))
+	mainWindow.SetFixedSize(true)
 	mainWindow.Show()
 	app.Run()
 }
