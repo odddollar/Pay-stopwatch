@@ -26,6 +26,9 @@ func main() {
 	clock := widget.NewLabel("Time: 00:00:00")
 	clock.Alignment = fyne.TextAlignCenter
 
+	payClock := widget.NewLabel("Pay: ")
+	payClock.Alignment = fyne.TextAlignCenter
+
 	start = widget.NewButton("Start", func() {
 		// change button text based on running state
 		running = !running
@@ -69,13 +72,14 @@ func main() {
 
 	content := container.NewVBox(
 		clock,
+		payClock,
 		buttons,
 	)
 
 	mainWindow.SetContent(content)
 
 	// run the window
-	mainWindow.Resize(fyne.NewSize(250, 90))
+	mainWindow.Resize(fyne.NewSize(250, 130))
 	mainWindow.SetFixedSize(true)
 	mainWindow.Show()
 	app.Run()
