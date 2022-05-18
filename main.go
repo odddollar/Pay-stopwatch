@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strconv"
 	"time"
 
@@ -18,6 +19,17 @@ func main() {
 	mainWindow := app.NewWindow("Pay Stopwatch")
 
 	seconds := 0
+
+	// get payrate
+	f, err := ioutil.ReadFile("payrate.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	payrate, err := strconv.ParseFloat(string(f), 64)
+	if err != nil {
+		panic(err)
+	}
 
 	// widgets
 	var start, reset *widget.Button
@@ -48,7 +60,7 @@ func main() {
 					clock.SetText(formatDuration(seconds))
 
 					// update pay display
-					payClock.SetText(calcPay(seconds))
+					payClock.SetText(calcPay(seconds, payrate))
 				} else {
 					return
 				}
@@ -62,6 +74,7 @@ func main() {
 		seconds = 0
 
 		start.SetText("Start")
+		payClock.SetText("Pay: 0.00")
 		clock.SetText(formatDuration(seconds))
 	})
 
@@ -90,9 +103,9 @@ func main() {
 	app.Run()
 }
 
-func calcPay(seconds int) string {
+func calcPay(seconds int, payrate float64) string {
 	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
-	pay := duration.Hours() * 14.95
+	pay := duration.Hours() * payrate
 	return fmt.Sprintf("Pay: %.2f", pay)
 }
 
