@@ -141,10 +141,22 @@ func showAbout(app fyne.App) {
 	appVersion := widget.NewLabel(version)
 	appVersion.Alignment = fyne.TextAlignCenter
 
+	rich := widget.NewRichTextFromMarkdown(`
+Created by: [Simon Eason (odddollar)](https://github.com/odddollar).
+
+Source available: [github.com/odddollar/Pay-stopwatch](https://github.com/odddollar/Pay-stopwatch).
+`)
+
+	closeButton := widget.NewButton("OK", func() {
+		appWindow.Close()
+	})
+
 	// layout
 	content := container.NewVBox(
 		title,
 		appVersion,
+		rich,
+		closeButton,
 	)
 
 	// set window content and run
