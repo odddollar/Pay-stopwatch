@@ -15,7 +15,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const version string = "v0.1"
+const version string = "v1.0"
 const payRateFile string = "payrate.txt"
 const defaultPayRate string = "10"
 
