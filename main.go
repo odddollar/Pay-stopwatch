@@ -98,7 +98,9 @@ func main() {
 
 	// create menu bar
 	fileMenu := fyne.NewMenu("File",
-		fyne.NewMenuItem("Change payrate", func() {}),
+		fyne.NewMenuItem("Change payrate", func() {
+			changePayrateWindow(app)
+		}),
 	)
 	helpMenu := fyne.NewMenu("Help",
 		fyne.NewMenuItem("About", func() {
@@ -128,6 +130,26 @@ func calcPay(seconds int, payrate float64) string {
 func formatDuration(seconds int) string {
 	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
 	return fmt.Sprintf("Time: %02d:%02d:%02d", int64(duration.Hours())%24, int64(duration.Minutes())%60, int64(duration.Seconds())%60)
+}
+
+func changePayrateWindow(app fyne.App) {
+	payrateWindow := app.NewWindow("Change payrate")
+
+	// widgets
+	entry := widget.NewEntry()
+
+	form := &widget.Form{
+		Items: []*widget.FormItem{
+			{Text: "New payrate", Widget: entry},
+		},
+		OnSubmit: func() {},
+	}
+
+	// set window content and run
+	payrateWindow.SetContent(form)
+	payrateWindow.Resize(fyne.NewSize(300, 80))
+	payrateWindow.SetFixedSize(true)
+	payrateWindow.Show()
 }
 
 func showAbout(app fyne.App) {
