@@ -17,6 +17,7 @@ import (
 
 const version string = "v0.1"
 const payRateFile string = "payrate.txt"
+const defaultPayRate string = "10"
 
 var payRate float64
 
@@ -120,9 +121,12 @@ func main() {
 }
 
 func getPayRate() float64 {
+	// if unable to read file create file with default value
 	f, err := ioutil.ReadFile(payRateFile)
 	if err != nil {
-		panic(err)
+		_ = fmt.Errorf("%v", err)
+		writePayRate(defaultPayRate)
+		f, _ = ioutil.ReadFile(payRateFile)
 	}
 
 	payRate, err := strconv.ParseFloat(string(f), 64)
@@ -131,6 +135,21 @@ func getPayRate() float64 {
 	}
 
 	return payRate
+}
+
+func writePayRate(text string) {
+	// write text parameter to file
+	f, err := os.Create(payRateFile)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = f.WriteString(text)
+	if err != nil {
+		panic(err)
+	}
+
+	f.Close()
 }
 
 func calcPay(seconds int, payRate float64) string {
@@ -157,15 +176,7 @@ func changePayrateWindow(app fyne.App) {
 		},
 		OnSubmit: func() {
 			// write text from entry field into file
-			f, err := os.Create(payRateFile)
-			if err != nil {
-				panic(err)
-			}
-
-			_, err = f.WriteString(entry.Text)
-			if err != nil {
-				panic(err)
-			}
+			writePayRate(entry.Text)
 
 			payRateWindow.Close()
 		},
