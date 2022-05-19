@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/validation"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -22,7 +23,7 @@ func main() {
 
 	seconds := 0
 
-	// get payrate
+	// get pay rate
 	f, err := ioutil.ReadFile("payrate.txt")
 	if err != nil {
 		panic(err)
@@ -98,7 +99,7 @@ func main() {
 
 	// create menu bar
 	fileMenu := fyne.NewMenu("File",
-		fyne.NewMenuItem("Change payrate", func() {
+		fyne.NewMenuItem("Change pay rate", func() {
 			changePayrateWindow(app)
 		}),
 	)
@@ -133,14 +134,15 @@ func formatDuration(seconds int) string {
 }
 
 func changePayrateWindow(app fyne.App) {
-	payrateWindow := app.NewWindow("Change payrate")
+	payrateWindow := app.NewWindow("Change pay rate")
 
 	// widgets
 	entry := widget.NewEntry()
+	entry.Validator = validation.NewRegexp(`^[0-9]+\.?[0-9]{0,3}$`, "Please enter a valid hourly pay rate")
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "New payrate", Widget: entry},
+			{Text: "New pay rate", Widget: entry},
 		},
 		OnSubmit: func() {},
 	}
