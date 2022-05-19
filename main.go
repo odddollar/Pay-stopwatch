@@ -183,5 +183,6 @@ Source available: [github.com/odddollar/Pay-stopwatch](https://github.com/odddol
 
 	// set window content and run
 	appWindow.SetContent(content)
+	appWindow.SetFixedSize(true)
 	appWindow.Show()
 }
