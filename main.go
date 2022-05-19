@@ -112,6 +112,7 @@ func main() {
 
 	// run the window
 	mainWindow.SetMaster()
+	mainWindow.SetIcon(resourceIconPng)
 	mainWindow.Resize(fyne.NewSize(250, 160))
 	//mainWindow.SetFixedSize(true)
 	mainWindow.Show()
@@ -177,6 +178,7 @@ func changePayrateWindow(app fyne.App) {
 
 	// set window content and run
 	payRateWindow.SetContent(form)
+	payRateWindow.SetIcon(resourceIconPng)
 	payRateWindow.Resize(fyne.NewSize(300, 80))
 	payRateWindow.SetFixedSize(true)
 	payRateWindow.Show()
@@ -213,6 +215,7 @@ Source available: [github.com/odddollar/Pay-stopwatch](https://github.com/odddol
 
 	// set window content and run
 	appWindow.SetContent(content)
+	appWindow.SetIcon(resourceIconPng)
 	appWindow.SetFixedSize(true)
 	appWindow.Show()
 }
