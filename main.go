@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"time"
 
@@ -15,6 +16,9 @@ import (
 )
 
 const version string = "v0.1"
+const payRateFile string = "payrate.txt"
+
+var payRate float64
 
 func main() {
 	// create app
@@ -24,15 +28,7 @@ func main() {
 	seconds := 0
 
 	// get pay rate
-	f, err := ioutil.ReadFile("payrate.txt")
-	if err != nil {
-		panic(err)
-	}
-
-	payrate, err := strconv.ParseFloat(string(f), 64)
-	if err != nil {
-		panic(err)
-	}
+	payRate = getPayRate()
 
 	// widgets
 	var start, reset *widget.Button
@@ -63,7 +59,7 @@ func main() {
 					clock.SetText(formatDuration(seconds))
 
 					// update pay display
-					payClock.SetText(calcPay(seconds, payrate))
+					payClock.SetText(calcPay(seconds, payRate))
 				} else {
 					return
 				}
@@ -122,9 +118,23 @@ func main() {
 	app.Run()
 }
 
-func calcPay(seconds int, payrate float64) string {
+func getPayRate() float64 {
+	f, err := ioutil.ReadFile(payRateFile)
+	if err != nil {
+		panic(err)
+	}
+
+	payRate, err := strconv.ParseFloat(string(f), 64)
+	if err != nil {
+		panic(err)
+	}
+
+	return payRate
+}
+
+func calcPay(seconds int, payRate float64) string {
 	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
-	pay := duration.Hours() * payrate
+	pay := duration.Hours() * payRate
 	return fmt.Sprintf("Pay: %.2f", pay)
 }
 
@@ -134,7 +144,7 @@ func formatDuration(seconds int) string {
 }
 
 func changePayrateWindow(app fyne.App) {
-	payrateWindow := app.NewWindow("Change pay rate")
+	payRateWindow := app.NewWindow("Change pay rate")
 
 	// widgets
 	entry := widget.NewEntry()
@@ -144,14 +154,32 @@ func changePayrateWindow(app fyne.App) {
 		Items: []*widget.FormItem{
 			{Text: "New pay rate", Widget: entry},
 		},
-		OnSubmit: func() {},
+		OnSubmit: func() {
+			// write text from entry field into file
+			f, err := os.Create(payRateFile)
+			if err != nil {
+				panic(err)
+			}
+
+			_, err = f.WriteString(entry.Text)
+			if err != nil {
+				panic(err)
+			}
+
+			payRateWindow.Close()
+		},
 	}
 
+	// set window to reload pay rate on close
+	payRateWindow.SetOnClosed(func() {
+		payRate = getPayRate()
+	})
+
 	// set window content and run
-	payrateWindow.SetContent(form)
-	payrateWindow.Resize(fyne.NewSize(300, 80))
-	payrateWindow.SetFixedSize(true)
-	payrateWindow.Show()
+	payRateWindow.SetContent(form)
+	payRateWindow.Resize(fyne.NewSize(300, 80))
+	payRateWindow.SetFixedSize(true)
+	payRateWindow.Show()
 }
 
 func showAbout(app fyne.App) {
