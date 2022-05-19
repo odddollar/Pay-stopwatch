@@ -168,11 +168,11 @@ func changePayrateWindow(app fyne.App) {
 
 	// widgets
 	entry := widget.NewEntry()
-	entry.Validator = validation.NewRegexp(`^[0-9]+\.?[0-9]{0,3}$`, "Please enter a valid hourly pay rate")
+	entry.Validator = validation.NewRegexp(`^[0-9]+\.?[0-9]{0,3}$`, "Not valid hourly rate")
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "New pay rate", Widget: entry},
+			{Text: "New hourly pay rate", Widget: entry},
 		},
 		OnSubmit: func() {
 			// write text from entry field into file
@@ -190,7 +190,7 @@ func changePayrateWindow(app fyne.App) {
 	// set window content and run
 	payRateWindow.SetContent(form)
 	payRateWindow.SetIcon(resourceIconPng)
-	payRateWindow.Resize(fyne.NewSize(300, 80))
+	payRateWindow.Resize(fyne.NewSize(320, 80))
 	payRateWindow.SetFixedSize(true)
 	payRateWindow.Show()
 }
