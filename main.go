@@ -13,6 +13,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+const version string = "v0.1"
+
 func main() {
 	// create app
 	app := app.New()
@@ -94,11 +96,25 @@ func main() {
 		buttons,
 	)
 
+	// create menu bar
+	fileMenu := fyne.NewMenu("File",
+		fyne.NewMenuItem("Change payrate", func() {}),
+	)
+	helpMenu := fyne.NewMenu("Help",
+		fyne.NewMenuItem("About", func() {
+			showAbout(app)
+		}),
+	)
+
+	mainWindow.SetMainMenu(fyne.NewMainMenu(fileMenu, helpMenu))
+
+	// set window content
 	mainWindow.SetContent(content)
 
 	// run the window
-	mainWindow.Resize(fyne.NewSize(250, 130))
-	mainWindow.SetFixedSize(true)
+	mainWindow.SetMaster()
+	mainWindow.Resize(fyne.NewSize(250, 160))
+	//mainWindow.SetFixedSize(true)
 	mainWindow.Show()
 	app.Run()
 }
@@ -112,4 +128,26 @@ func calcPay(seconds int, payrate float64) string {
 func formatDuration(seconds int) string {
 	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
 	return fmt.Sprintf("Time: %02d:%02d:%02d", int64(duration.Hours())%24, int64(duration.Minutes())%60, int64(duration.Seconds())%60)
+}
+
+func showAbout(app fyne.App) {
+	appWindow := app.NewWindow("About")
+
+	// widgets
+	title := widget.NewLabel("Pay Stopwatch")
+	title.Alignment = fyne.TextAlignCenter
+	title.TextStyle = fyne.TextStyle{Bold: true}
+
+	appVersion := widget.NewLabel(version)
+	appVersion.Alignment = fyne.TextAlignCenter
+
+	// layout
+	content := container.NewVBox(
+		title,
+		appVersion,
+	)
+
+	// set window content and run
+	appWindow.SetContent(content)
+	appWindow.Show()
 }
