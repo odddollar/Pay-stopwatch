@@ -60,7 +60,7 @@ func main() {
 					clock.SetText(formatDuration(seconds))
 
 					// update pay display
-					payClock.SetText(calcPay(seconds, payRate))
+					payClock.SetText(calcPay(seconds))
 				} else {
 					return
 				}
@@ -152,7 +152,7 @@ func writePayRate(text string) {
 	f.Close()
 }
 
-func calcPay(seconds int, payRate float64) string {
+func calcPay(seconds int) string {
 	duration, _ := time.ParseDuration(strconv.Itoa(seconds) + "s")
 	pay := duration.Hours() * payRate
 	return fmt.Sprintf("Pay: %.2f", pay)
