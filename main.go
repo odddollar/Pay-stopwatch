@@ -15,7 +15,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const version string = "v1.0"
+const version string = "v1.0.1"
 const payRateFile string = "payrate.txt"
 const defaultPayRate string = "10"
 
@@ -115,7 +115,7 @@ func main() {
 	mainWindow.SetMaster()
 	mainWindow.SetIcon(resourceIconPng)
 	mainWindow.Resize(fyne.NewSize(250, 160))
-	//mainWindow.SetFixedSize(true)
+	mainWindow.SetFixedSize(true)
 	mainWindow.Show()
 	app.Run()
 }
