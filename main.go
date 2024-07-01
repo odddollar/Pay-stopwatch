@@ -1,10 +1,14 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -36,22 +40,20 @@ func main() {
 	seconds.Set(0)
 
 	// Clock widgets
-	clock := widget.NewLabelWithData(
-		// Automatically format time from seconds
-		binding.NewSprintf(
-			"Time: %d",
-			seconds,
-		),
-	)
+	clock := widget.NewLabelWithData(binding.IntToString(seconds))
 	clock.Alignment = fyne.TextAlignCenter
-	payClock := widget.NewLabelWithData(
-		// Automatically calculate pay from seconds
-		binding.NewSprintf(
-			"Pay: %d",
-			seconds,
-		),
-	)
+	payClock := widget.NewLabelWithData(binding.IntToString(seconds))
 	payClock.Alignment = fyne.TextAlignCenter
+
+	// Clock widget labels
+	clockLabel := canvas.NewText("Time", color.Black)
+	clockLabel.Alignment = fyne.TextAlignCenter
+	clockLabel.TextStyle.Bold = true
+	clockLabel.TextSize = 20
+	payClockLabel := canvas.NewText("Pay", color.Black)
+	payClockLabel.Alignment = fyne.TextAlignCenter
+	payClockLabel.TextStyle.Bold = true
+	payClockLabel.TextSize = 20
 
 	// Start/stop and reset widgets
 	startButton = widget.NewButton("Start", startButtonCallback)
@@ -60,8 +62,13 @@ func main() {
 
 	// Create main layout
 	content := container.NewVBox(
+		layout.NewSpacer(),
+		clockLabel,
 		clock,
+		layout.NewSpacer(),
+		payClockLabel,
 		payClock,
+		layout.NewSpacer(),
 		container.NewBorder(
 			nil,
 			nil,
