@@ -40,20 +40,22 @@ func main() {
 	seconds.Set(0)
 
 	// Clock widgets
-	clock := widget.NewLabelWithData(binding.IntToString(seconds))
-	clock.Alignment = fyne.TextAlignCenter
-	payClock := widget.NewLabelWithData(binding.IntToString(seconds))
-	payClock.Alignment = fyne.TextAlignCenter
+	clock := NewCustomLabel(binding.IntToString(seconds))
+	clock.SetAlignment(fyne.TextAlignCenter)
+	clock.SetFontSize(22)
+	payClock := NewCustomLabel(binding.IntToString(seconds))
+	payClock.SetAlignment(fyne.TextAlignCenter)
+	payClock.SetFontSize(22)
 
 	// Clock widget labels
 	clockLabel := canvas.NewText("Time", color.Black)
 	clockLabel.Alignment = fyne.TextAlignCenter
 	clockLabel.TextStyle.Bold = true
-	clockLabel.TextSize = 20
+	clockLabel.TextSize = 24
 	payClockLabel := canvas.NewText("Pay", color.Black)
 	payClockLabel.Alignment = fyne.TextAlignCenter
 	payClockLabel.TextStyle.Bold = true
-	payClockLabel.TextSize = 20
+	payClockLabel.TextSize = 24
 
 	// Start/stop and reset widgets
 	startButton = widget.NewButton("Start", startButtonCallback)
@@ -99,7 +101,7 @@ func main() {
 	// Set window properties
 	mainWindow.SetContent(content)
 	mainWindow.SetMainMenu(menu)
-	mainWindow.Resize(fyne.NewSize(480, 290))
+	mainWindow.Resize(fyne.NewSize(425, 290))
 	mainWindow.SetFixedSize(true)
 
 	// Run app
