@@ -16,7 +16,10 @@ var (
 )
 
 // Keeps track of current elapsed seconds
-var time binding.Int
+var seconds binding.Int
+
+// Hold global running state
+var running bool
 
 func main() {
 	// Create app
@@ -24,15 +27,15 @@ func main() {
 	mainWindow := app.NewWindow("Pay Stopwatch")
 
 	// Set initial time
-	time = binding.NewInt()
-	time.Set(0)
+	seconds = binding.NewInt()
+	seconds.Set(0)
 
 	// Clock widgets
 	clock := widget.NewLabelWithData(
 		// Automatically format time from seconds
 		binding.NewSprintf(
 			"Time: %d",
-			time,
+			seconds,
 		),
 	)
 	clock.Alignment = fyne.TextAlignCenter
@@ -40,14 +43,14 @@ func main() {
 		// Automatically calculate pay from seconds
 		binding.NewSprintf(
 			"Pay: %d",
-			time,
+			seconds,
 		),
 	)
 	payClock.Alignment = fyne.TextAlignCenter
 
 	// Start/stop and reset widgets
-	startButton = widget.NewButton("Start", func() {})
-	resetButton = widget.NewButton("Reset", func() {})
+	startButton = widget.NewButton("Start", startButtonCallback)
+	resetButton = widget.NewButton("Reset", resetButtonCallback)
 
 	// Create main layout
 	content := container.NewVBox(
