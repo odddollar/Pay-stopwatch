@@ -9,6 +9,12 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+// Main app objects
+var (
+	a          fyne.App
+	mainWindow fyne.Window
+)
+
 // Button widget variables
 var (
 	startButton *widget.Button
@@ -23,8 +29,8 @@ var running bool
 
 func main() {
 	// Create app
-	app := app.New()
-	mainWindow := app.NewWindow("Pay Stopwatch")
+	a = app.New()
+	mainWindow = a.NewWindow("Pay Stopwatch")
 
 	// Set initial time
 	seconds = binding.NewInt()
@@ -78,7 +84,7 @@ func main() {
 			"Help",
 			fyne.NewMenuItem(
 				"About",
-				func() {},
+				showAbout,
 			),
 		),
 	)
@@ -86,10 +92,10 @@ func main() {
 	// Set window properties
 	mainWindow.SetContent(content)
 	mainWindow.SetMainMenu(menu)
-	mainWindow.Resize(fyne.NewSize(250, 160))
+	mainWindow.Resize(fyne.NewSize(480, 290))
 	mainWindow.SetFixedSize(true)
 
 	// Run app
 	mainWindow.Show()
-	app.Run()
+	a.Run()
 }
