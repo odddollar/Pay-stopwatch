@@ -1,6 +1,8 @@
 package main
 
-import "time"
+import (
+	"time"
+)
 
 // Starts and pauses timer counting
 func startButtonCallback() {

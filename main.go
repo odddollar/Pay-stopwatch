@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -39,23 +41,41 @@ func main() {
 	seconds = binding.NewInt()
 	seconds.Set(0)
 
-	// Clock widgets
-	clock := NewCustomLabel(binding.IntToString(seconds))
+	// Custom binding for clock widget
+	clockString := binding.NewString()
+	seconds.AddListener(binding.NewDataListener(func() {
+		// Get elapsed seconds and parse duration
+		s, _ := seconds.Get()
+		d, _ := time.ParseDuration(fmt.Sprintf("%ds", s))
+
+		// Format string
+		clockString.Set(fmt.Sprintf(
+			"%02d:%02d:%02d",
+			int(d.Hours()),
+			int(d.Minutes())%60,
+			int(d.Seconds())%60,
+		))
+	}))
+
+	// Clock widget
+	clock := NewCustomLabel(clockString)
 	clock.SetAlignment(fyne.TextAlignCenter)
 	clock.SetFontSize(22)
-	payClock := NewCustomLabel(binding.IntToString(seconds))
-	payClock.SetAlignment(fyne.TextAlignCenter)
-	payClock.SetFontSize(22)
+
+	// Pay widget
+	pay := NewCustomLabel(clockString)
+	pay.SetAlignment(fyne.TextAlignCenter)
+	pay.SetFontSize(22)
 
 	// Clock widget labels
 	clockLabel := canvas.NewText("Time", color.Black)
 	clockLabel.Alignment = fyne.TextAlignCenter
 	clockLabel.TextStyle.Bold = true
 	clockLabel.TextSize = 24
-	payClockLabel := canvas.NewText("Pay", color.Black)
-	payClockLabel.Alignment = fyne.TextAlignCenter
-	payClockLabel.TextStyle.Bold = true
-	payClockLabel.TextSize = 24
+	payLabel := canvas.NewText("Pay", color.Black)
+	payLabel.Alignment = fyne.TextAlignCenter
+	payLabel.TextStyle.Bold = true
+	payLabel.TextSize = 24
 
 	// Start/stop and reset widgets
 	startButton = widget.NewButton("Start", startButtonCallback)
@@ -68,8 +88,8 @@ func main() {
 		clockLabel,
 		clock,
 		layout.NewSpacer(),
-		payClockLabel,
-		payClock,
+		payLabel,
+		pay,
 		layout.NewSpacer(),
 		container.NewBorder(
 			nil,

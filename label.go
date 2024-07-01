@@ -27,15 +27,11 @@ func NewCustomLabel(data binding.String) *CustomLabel {
 	label.ExtendBaseWidget(label)
 
 	// Add listener to data binding that updates text
-	label.data.AddListener(
-		binding.NewDataListener(
-			func() {
-				value, _ := label.data.Get()
-				label.text.Text = value
-				label.Refresh()
-			},
-		),
-	)
+	label.data.AddListener(binding.NewDataListener(func() {
+		value, _ := label.data.Get()
+		label.text.Text = value
+		label.Refresh()
+	}))
 	return label
 }
 
