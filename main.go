@@ -57,13 +57,25 @@ func main() {
 		))
 	}))
 
+	// Custom binding for pay widget
+	payString := binding.NewString()
+	seconds.AddListener(binding.NewDataListener(func() {
+		// Get elapsed seconds and parse duration
+		s, _ := seconds.Get()
+		d, _ := time.ParseDuration(fmt.Sprintf("%ds", s))
+
+		// Calculate pay
+		pay := d.Hours() * a.Preferences().FloatWithFallback("payRate", 25.0)
+		payString.Set(fmt.Sprintf("%.2f", pay))
+	}))
+
 	// Clock widget
 	clock := NewCustomLabel(clockString)
 	clock.SetAlignment(fyne.TextAlignCenter)
 	clock.SetFontSize(22)
 
 	// Pay widget
-	pay := NewCustomLabel(clockString)
+	pay := NewCustomLabel(payString)
 	pay.SetAlignment(fyne.TextAlignCenter)
 	pay.SetFontSize(22)
 
