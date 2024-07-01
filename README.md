@@ -14,3 +14,9 @@ cd Pay-stopwatch
 go install fyne.io/fyne/v2/cmd/fyne@latest // installs the necessary Fyne tooling
 fyne package --release
 ```
+
+## Screenshots
+
+![Image 1](/screenshots/image1.png)
+
+![Image 2](/screenshots/image2.png)
