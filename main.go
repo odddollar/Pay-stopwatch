@@ -77,7 +77,7 @@ func main() {
 			"File",
 			fyne.NewMenuItem(
 				"Change pay rate",
-				func() {},
+				changePayRate,
 			),
 		),
 		fyne.NewMenu(
