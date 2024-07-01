@@ -15,7 +15,7 @@ func showAbout() {
 	d := container.NewVBox(
 		widget.NewRichTextFromMarkdown(fmt.Sprintf("Version: **%s**", a.Metadata().Version)),
 		widget.NewRichTextFromMarkdown("Created by: [Simon Eason (odddollar)](https://github.com/odddollar)"),
-		widget.NewRichTextFromMarkdown("Source available: [github.com/odddollar/Pay-stopwatch](https://github.com/odddollar/Pay-stopwatch)"),
+		widget.NewRichTextFromMarkdown("Source: [github.com/odddollar/Pay-stopwatch](https://github.com/odddollar/Pay-stopwatch)"),
 	)
 
 	// Show dialog with layout
