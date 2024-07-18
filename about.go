@@ -14,7 +14,7 @@ func showAbout() {
 	// Separate markdown widget for better spacing
 	d := container.NewVBox(
 		widget.NewRichTextFromMarkdown(fmt.Sprintf("Version: **%s**", a.Metadata().Version)),
-		widget.NewRichTextFromMarkdown("Created by: [Simon Eason (odddollar)](https://github.com/odddollar)"),
+		widget.NewRichTextFromMarkdown("Created by: [odddollar (Simon Eason)](https://github.com/odddollar)"),
 		widget.NewRichTextFromMarkdown("Source: [github.com/odddollar/Pay-stopwatch](https://github.com/odddollar/Pay-stopwatch)"),
 	)
 
